@@ -1,2 +1,2 @@
-# SSP_CypressProject
-by Pankaj Surya
+# All Cypress Projects
+by Pankaj
