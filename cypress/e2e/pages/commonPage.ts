@@ -37,7 +37,7 @@ export class CommonPage{
    public clickonContinue :string = "button[type='submit']"
    public successMsg :string = "div[role='status']"
    //Element for PaymentGateway Testpay.mtn.ng
-  public debitCardOption: string = "body > app-root:nth-child(1) > app-root:nth-child(2) > app-payment-gateway:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > app-pg-home:nth-child(1) > mat-card:nth-child(1) > mat-card-content:nth-child(1) > mat-list:nth-child(1) > div:nth-child(2) > mat-list-item:nth-child(1)"
+   public debitCardOption: string = "body > app-root:nth-child(1) > app-root:nth-child(2) > app-payment-gateway:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > app-pg-home:nth-child(1) > mat-card:nth-child(1) > mat-card-content:nth-child(1) > mat-list:nth-child(1) > div:nth-child(2) > mat-list-item:nth-child(1)"
   public cardDetails: string = "#new"
   public enterCardNumber: string = "#mat-input-0"
   public cardExpiryDate: string =  "#mat-input-1"
@@ -606,38 +606,35 @@ validateloginSelfServiceBulkSMSCorporateApplicationWithGoogleCredentials(){
 */ 
 loginSSP_EnterprisesBusinessApplicationWithAccountID()
 {
-  this.SSP_EnterprisesBusinessApplicationWithAccountID()
+  this.redirectOnWebBillPage()
 }
 
-SSP_EnterprisesBusinessApplicationWithAccountID()
+redirectOnWebBillPage()
 {
-    //navigate to EnterpriseBusinessApplication
     cy.get(this.enterpriseBusinessPage).click({force: true})
     cy.wait(2000)
     cy.contains('Pay bill').click({force:true}).should('have.text', 'Pay bill')
     cy.wait(1000)
-}
+  }
 enterWebBillsAccountID(){
     cy.get(this.selectAccountID).click({force:true})
     //expect(Basepage.checkRediobuttonSelected(this.selectAccountID)).to.be.true
     //cy.get(this.AccountID).should('be.enabled')
     Basepage.enterText(this.accountIDtxtbox,Cypress.env('accountID'))
-    cy.contains('Continue').click()
+    cy.wait(2000)
     cy.contains('Continue').click()
     cy.wait(1000)
   }
-
   validateSSP_EnterprisesBusinessLoginSuccess()
 {
   expect(Basepage.elementVisibleContainsText(this.successMsg, testdataSSP.Billpayment.commonDetails.successNotification)).to.be.ok
-  //cy.get(this.successMsg,{timeout:1000}).contains('Success').should('be.visible')
-}
 
+}
 enterCardDetailsWithPIN_TestPayMTN_SSP()
 {
-  cy.wait(3000)
+  cy.wait(6000)
   cy.get(this.debitCardOption).click({force:true})
-  cy.wait(3000)
+  cy.wait(6000)
   cy.get(this.cardDetails).click()
   Basepage.enterText(this.enterCardNumber, testdataSSP.MasterDebitCardPIN1.CardNumber)
   Basepage.enterText(this.cardExpiryDate, testdataSSP.MasterDebitCardPIN1.ExpiryDate)
@@ -682,6 +679,7 @@ captureReceiptNo1RCT(){
     cy.log("Generated 1RTC:", genrated1RCTNo)
     })
 }
+
 /**
  * navigateTomPulseAplicationUserLogin*/
 navigateTomPulseAplicationUserURL() {
@@ -700,8 +698,9 @@ navigateTomPulseAplicationUserURL() {
  mPulseAauthenticationWithUserAccount(){
      cy.get("#edit-name").type(Cypress.env('auth_mpulse_username'))  
      cy.get("#edit-pass").type(Cypress.env('auth_mpulse_password'))
-     cy.get("#edit-submit").click()
-     cy.wait(5000)
+     cy.get("#edit-submit").click({force:true})
+     cy.wait(15000)
+     expect(cy.get("#block-selfservice-content > div > section.mpulse_cards_hero > div > div > div > div > div > div.owl-stage-outer > div > div:nth-child(2) > a").should('be.visible'))
  }
 
  // User Logout From mPulse Application

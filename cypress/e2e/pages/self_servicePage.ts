@@ -44,7 +44,7 @@ export class self_servicePage{
    public noficationError: string = "div[class='notification notification-error notification-enter-done']"
    public notificationSuccess: string = "div[class='notification notification-success notification-enter-done']"
    public notificationTitle: string = ".title"
-
+    
     /**navigateTo_*/
     clickOnFooterlinkofContactUs()
     {
@@ -129,7 +129,6 @@ export class self_servicePage{
     }
   
 }
-
 
 
 export default new self_servicePage();

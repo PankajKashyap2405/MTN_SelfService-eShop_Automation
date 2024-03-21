@@ -22,7 +22,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "cypress": "^13.6.6",
+    "cypress": "^13.7.0",
     "cypress-iframe": "^1.0.1",
     "cypress-plugin-tab": "^1.0.5",
     "cypress-xpath": "^2.0.1"
@@ -40,5 +40,6 @@
     "include": [
       "**/*.ts"
     ]
-  }
+  },
+  "keywords": []
 }

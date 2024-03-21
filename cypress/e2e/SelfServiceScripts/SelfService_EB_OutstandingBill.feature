@@ -9,8 +9,6 @@ Feature: MTN SelfService Enterprises Business-Outstanding Bill Payment
         Then EB Validate User logged in Successful for Outstanding Bill Payment
         When Validate the invoice sum and autopopulated Outstanding amount for Outstanding Bill Payment
         Then Validate that page is carrying the total outstading amount on checkout page
-        When Enter card details for Outstanding Bill Payment
-
-     
-
-        
+        When Make Complete Outstanding Bill Payment by Card
+        Then Validate Generated 1RCT Number for Complete Outstanding Payment
+        When Validate Complete Outstanding Payment Fulfilment

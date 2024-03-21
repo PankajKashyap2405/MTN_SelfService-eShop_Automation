@@ -12,7 +12,8 @@ Feature: MTN SelfService Enterprises Business-Excess Bill Payment
         When Validate that page is carrying the excess and outstading amount on checkout page
         Then Validate checkout page Summary and Pay for Excess Payment
         When Make Excess payment by Card
-        Then Validate excess payment fulfilment
+        Then Validate Generated 1RCT Number for Excess Payment
+        When Validate excess payment fulfilment
 
      
 
