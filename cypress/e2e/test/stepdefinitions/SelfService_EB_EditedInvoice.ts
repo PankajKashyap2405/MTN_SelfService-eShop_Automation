@@ -8,7 +8,7 @@ Given("Navigate to SelfService Enterprises Business Application URL for Edited I
   });
 
 When("Users login to SelfService EB -Bill Payment Application with Account ID for Edited Invoice Payment", () => {
-  commonPage.loginSSP_EnterprisesBusinessApplicationWithAccountID()
+  commonPage.redirectOnWebBillPage()
   commonPage.enterWebBillsAccountID() 
 });
 

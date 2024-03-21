@@ -11,7 +11,7 @@ export class EBpage {
   public status: string =    "p[class='text-sm font-bold text-[#56AC60] inline-flex items-center']";
   public name: string =    "body > div:nth-child(1) > div:nth-child(2) > main:nth-child(1) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > p:nth-child(2)";
   public dueBils: string =    "body > div:nth-child(1) > div:nth-child(2) > main:nth-child(1) > div:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > p:nth-child(2)";
-  public outstandingBilltab: string =    "button[class='md:text-md px-4 py-2 text-sm border-b-2 border-mtn-link font-medium text-mtn-link']";
+  public outstandingBilltab: string =    "button[class='md:text-md px-4 py-2 text-sm border-mtn-link text-mtn-link border-b-2 font-medium']";
   public totalOustandAmtgoption1: string =    "div[class='flex items-center justify-center gap-3'] span";
   public totalOustandAmtonCustomLevel: string = "h1[class='text-lg font-medium text-black'] div"
   public invoiceTable: string =    "table[class='w-full divide-y divide-gray-300']>tbody>tr";
@@ -181,16 +181,16 @@ export class EBpage {
     cy.get(this.selectInvoiceOpt).click({ force: true });
     cy.wait(2000);
   
-    cy.get(this.invoiceRow1)
+    cy.get(this.invoiceRow2)
       .find(this.checkInvoiceBox)
       .check()
       .should("be.checked");
       //get invoice number
-    cy.get(this.invoiceRow1).find(this.invoiceNumberCol).then(($element) => {
+    cy.get(this.invoiceRow2).find(this.invoiceNumberCol).then(($element) => {
         this.invoiceNumber1 = $element.text(); 
     })
       //get invoice amount before payment
-    cy.get(this.invoiceRow1).find(this.invoiceOutAmtCol).then(($element) => {
+    cy.get(this.invoiceRow2).find(this.invoiceOutAmtCol).then(($element) => {
         const invoiceOutAmt = $element.text();
         let invoiceOutAmtST = invoiceOutAmt.split("₦")[1]
         this.invoiceAmtBeforePay = Number(+invoiceOutAmtST.replace(/,/g, ''))  //remove comma from amount ,
@@ -214,23 +214,23 @@ export class EBpage {
     cy.get(this.selectInvoiceOpt).click({ force: true });
     cy.wait(2000);
   
-    cy.get(this.invoiceRow1)
+    cy.get(this.invoiceRow2)
       .find(this.checkInvoiceBox)
       .check()
       .should("be.checked");
       //get invoice number
-    cy.get(this.invoiceRow1).find(this.invoiceNumberCol).then(($element) => {
+    cy.get(this.invoiceRow2).find(this.invoiceNumberCol).then(($element) => {
         this.invoiceNumber1 = $element.text(); 
     })
     //get invoice amount
-    cy.get(this.invoiceRow1).find(this.invoiceOutAmtCol).then(($element) => {
+    cy.get(this.invoiceRow2).find(this.invoiceOutAmtCol).then(($element) => {
       const invoiceOutAmtST = $element.text();
       let invoiceOutAmt = invoiceOutAmtST.split("₦")[1]
       this.invoiceAmtBeforePay = Number(+invoiceOutAmt.replace(',', ''))  //remove comma from amount ,
       cy.log("invoice amount", this.invoiceAmtBeforePay)
      })
       //edit invoice amount
-    cy.get(this.invoiceRow1).find(this.invoiceTxtBox).type(testdataSSP.Billpayment.AcDetailsOf2000008721.editedInvoiceAmount)
+    cy.get(this.invoiceRow2).find(this.invoiceTxtBox).type(testdataSSP.Billpayment.AcDetailsOf2000008721.editedInvoiceAmount)
     cy.wait(1000);
     let numEditedAmount: any
     cy.get(this.totalOustandAmtonCustomLevel).then(($element) => {
@@ -251,11 +251,12 @@ export class EBpage {
     cy.get(this.outstandingBilltab).scrollIntoView();
     cy.get(this.selectInvoiceOpt).click({ force: true });
     cy.wait(1000);
-    cy.get(this.invoiceRow1).find(this.checkInvoiceBox).check().should("be.checked");
+    cy.get(this.invoiceRow2).find(this.checkInvoiceBox).check().should("be.checked");
     //proceed for validate by invoice number//On Full invoice payment, invoice number should be removed from
-    cy.get(this.invoiceRow1).find(this.invoiceNumberCol).then(($element) => {
+    cy.get(this.invoiceRow2).find(this.invoiceNumberCol).then(($element) => {
     this.invoiceNumber2 = $element.text();
     expect(this.invoiceNumber1).to.not.equal(this.invoiceNumber2)
+    cy.wait(10000)
   })
 }
 
@@ -265,9 +266,9 @@ validateCustomPayementfulfilmentforEditedInvoice(){
       cy.get(this.outstandingBilltab).scrollIntoView();
       cy.get(this.selectInvoiceOpt).click({ force: true });
       cy.wait(1000);
-      cy.get(this.invoiceRow1).find(this.checkInvoiceBox).check().should("be.checked");
+      cy.get(this.invoiceRow2).find(this.checkInvoiceBox).check().should("be.checked");
       //proceed for validate Deducted invoice amount  
-      cy.get(this.invoiceRow1).find(this.invoiceOutAmtCol).then(($element) => {
+      cy.get(this.invoiceRow2).find(this.invoiceOutAmtCol).then(($element) => {
       const getinvoiceAmtAfterPay = $element.text();
       let invoiceAmtAfterPayST = getinvoiceAmtAfterPay.split("₦")[1]
       cy.log(invoiceAmtAfterPayST);
@@ -275,6 +276,8 @@ validateCustomPayementfulfilmentforEditedInvoice(){
       cy.log("Invoice Amt After pay", this.invoiceAmtAfterPay)
       let amountAfterDeduction =  this.invoiceAmtBeforePay-this.totalcheckoutAmountAllNum
       expect(this.invoiceAmtAfterPay).to.equal(amountAfterDeduction)
+      cy.get(this.outstandingBilltab).scrollIntoView();
+      cy.wait(10000)
     })
   }
 
@@ -293,6 +296,18 @@ validateCustomPayementfulfilmentforEditedInvoice(){
       cy.log('Excess Made:', totalExcessPaymentMade)
     }).then(()=>{
       expect(CurrentExcessAmt).to.be.equal(totalExcessPaymentMade)
+    })
+    cy.wait(10000)
+  }
+
+  validateCompleteOutstandingPayementFulfilment(){
+    let exptedTotalOutstandingAmt
+    cy.get(this.totalOustandAmtgoption1).then(($element) => {
+        exptedTotalOutstandingAmt = $element.text().trim()
+      cy.log(exptedTotalOutstandingAmt)
+      cy.log("Expected outstading after payment ",exptedTotalOutstandingAmt)
+      expect(exptedTotalOutstandingAmt).to.equal('0')
+      cy.wait(10000)
     })
   }
   getTotalCheckoutAmountforCustom(){

@@ -73,7 +73,9 @@ captureOpeningSMSBalance(){
 selectUSSDproduct(){
         //Basepage.selectByText(this.productDropdown, 'BulkSpTest')
         cy.get(this.myServices).click()
+        cy.wait(1000)
         cy.get(this.ussdTab).click()
+        cy.wait(1000)
         cy.get(this.productDropdown).click({force:true})
         cy.contains(testdataSSP.BulkSMScorporate.USSD.ussdProduct1).click()
         cy.wait(5000)
@@ -122,7 +124,7 @@ selectToBuyRateCard(){
 //purchase product
 
 validateCarryProductAmount_checkoutAmount(){
-    cy.wait(5000)
+    cy.wait(8000)
     let subvalue=""
     cy.get(this.subTotal).then(($element) =>{
         let subtotalString = $element.text().split('₦')[1].trim()
@@ -340,22 +342,24 @@ checkUpdatedBalanceAfterBuyforSMS()
         let updatedSMSBalance = this.openingBalance1 + this.volume
         expect(openingBalance2).to.equal(updatedSMSBalance)
         })
+        cy.wait(10000)
 }
 checkUpdatedBalanceAfterBuyforUSSD()
 {
     cy.wait(300000) //5 minutes wait for update the balance in dashboard
     this.selectUSSDproduct()  //calling function again
-    let ussd_ChargingBalanceOld= this.ussd_ChargingBalance1
-    cy.log('ussd_ChargingBalanceOld', ussd_ChargingBalanceOld)
-    this.captureOpeningUSSDBalance()
-    let updatedUSSDBalance=0
-    cy.log('ussd_ChargingBalanceNew', this.newUssd_ChargingBalance).then(()=>{
-        updatedUSSDBalance = ussd_ChargingBalanceOld + this.carryProductOfprice_volume +updatedUSSDBalance
+    let expectedUSSDBalance=0
+    let ussd_ChargingBalanceNew:any
+    cy.get(this.ussdChargingBalance).then(($element) => {
+        let ussd_ChargingBalanceSt = $element.text().split(" ")[2].trim()
+            ussd_ChargingBalanceNew = Number(+ussd_ChargingBalanceSt.replace(',', ''))  //remove comma ,
+            cy.log('ussd_ChargingBalanceNew', ussd_ChargingBalanceNew)
     }).then(()=>{
-
-            expect(this.newUssd_ChargingBalance).to.equal(updatedUSSDBalance)
-      
-        })
+        expectedUSSDBalance = expectedUSSDBalance + this.carryProductOfprice_volume + this.ussd_ChargingBalance1
+    }).then(()=>{
+            expect(expectedUSSDBalance).to.equal(ussd_ChargingBalanceNew)
+            cy.wait(10000)
+    })
 
     }
 }

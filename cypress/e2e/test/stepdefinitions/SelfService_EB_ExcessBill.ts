@@ -10,8 +10,8 @@ Given("Navigate to SelfService Enterprises Business Application URL for ExcessPa
 
 //Users login to SelfService EB -Bill Payment Application with Account ID
 When("Users login to SelfService EB -Bill Payment Application with Account ID for ExcessPayment", () => {
-  commonPage.loginSSP_EnterprisesBusinessApplicationWithAccountID()
-  commonPage.enterWebBillsAccountID()
+  commonPage.redirectOnWebBillPage()
+  commonPage.enterWebBillsAccountID() 
 });
 
 //Validate EB User logged in Successful
@@ -39,12 +39,12 @@ When("Make Excess payment by Card", () => {
   EBpage.payNowforPaymentGateway()
   commonPage.enterCardDetailsWithPIN_TestPayMTN_SSP()
 });
-When("Validate Generated 1RCT Number for Excess Payment", () => {
+Then("Validate Generated 1RCT Number for Excess Payment", () => {
   commonPage.validatePaymentSuccessMessage()
   commonPage.captureTransactionID()
   commonPage.captureReceiptNo1RCT()
 })
-Then ("Validate excess payment fulfilment", () => {
+When("Validate excess payment fulfilment", () => {
   EBpage.backtoHomeWebBills()
   commonPage.enterWebBillsAccountID()
   commonPage.validateSSP_EnterprisesBusinessLoginSuccess() 

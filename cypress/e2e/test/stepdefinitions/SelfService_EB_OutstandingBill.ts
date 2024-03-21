@@ -10,7 +10,8 @@ Given("Navigate to SelfService Enterprises Business Application URL for Outstand
 
 //Users login to SelfService EB -Bill Payment Application with Account ID
 When("Users login to SelfService EB -Bill Payment Application with Account ID for Outstanding Bill Payment", () => {
-  commonPage.loginSSP_EnterprisesBusinessApplicationWithAccountID() 
+  commonPage.redirectOnWebBillPage()
+  commonPage.enterWebBillsAccountID() 
 });
 //Validate EB User logged in Successful
 Then("EB Validate User logged in Successful for Outstanding Bill Payment", () => {
@@ -24,10 +25,21 @@ Then("Validate that page is carrying the total outstading amount on checkout pag
   EBpage.proceedForPayTotalOuststaingAmount()
   EBpage.enterMobileNo()
   EBpage.getTotalCheckoutAmount()
-  //EBpage.validateTotalOuststandingAmountWithTotalCheckoutAmount()
+  EBpage.validateTotalOuststandingAmountWithTotalCheckoutAmount()
 
 });
-When("Enter card details for Outstanding Bill Payment", () => {
+When("Make Complete Outstanding Bill Payment by Card", () => {
   EBpage.payNowforPaymentGateway()
   commonPage.enterCardDetailsWithPIN_TestPayMTN_SSP()
 });
+Then("Validate Generated 1RCT Number for Complete Outstanding Payment", () => {
+  commonPage.validatePaymentSuccessMessage()
+  commonPage.captureTransactionID()
+  commonPage.captureReceiptNo1RCT()
+})
+When("Validate Complete Outstanding Payment Fulfilment", () => {
+  EBpage.backtoHomeWebBills()
+  commonPage.enterWebBillsAccountID()
+  commonPage.validateSSP_EnterprisesBusinessLoginSuccess() 
+  EBpage.validateCompleteOutstandingPayementFulfilment()
+})
